@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/home.dart';
-import 'package:graduation_project/logIn_screen.dart';
+import 'package:graduation_project/registeration/logIn_screen.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -16,7 +16,6 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   double screenHeight = 0;
   double screenWidth = 0;
@@ -68,7 +67,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
     });
   }
-
+  Future user() async{
+    await FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null){
+        print(user.uid);
+      }
+      
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,11 +135,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             showSnackBarText("Username is still empty!");
                           } else if (phoneController.text.isEmpty) {
                             showSnackBarText("Phone number is still empty!");
-                          } else if (passwordController.text.isEmpty) {
-                            showSnackBarText("password is still empty!");
                           } else {
                             verifyPhone(countryDial + phoneController.text);
-                          }
+                          } 
                         } 
                         else {
                           if (otpPin.length >= 6) {
@@ -182,7 +186,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const logInscreen()));
+                                    builder: (context) => const logInscreen()),
+                                    );
                               },
                               child: Text(
                                 'Log In here!',
@@ -279,29 +284,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
             ]
           ),
-          SizedBox(height: 5,),
-          Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(16))),
-            child: TextFormField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                  focusedBorder:OutlineInputBorder (
-                borderSide: BorderSide(color: pink),
-                borderRadius: BorderRadius.circular(16)
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                 hintText: "Password",
-                fillColor: Colors.grey,
-              ),
-            ),
-          ),
+         
         ],
       ),
     );
