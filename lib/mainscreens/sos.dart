@@ -1,4 +1,7 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
+
 class SOS_screen extends StatefulWidget {
   const SOS_screen({super.key});
 
@@ -9,8 +12,6 @@ class SOS_screen extends StatefulWidget {
 class _SOS_screenState extends State<SOS_screen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('hi'),
-    );
+    return const Text('SOS');
   }
 }

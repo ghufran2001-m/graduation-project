@@ -67,8 +67,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
   Future user() async{
+    // ignore: await_only_futures
     await FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null){
+        // ignore: avoid_print
         print(user.uid);
       }
       
@@ -83,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xffD9D9D9),
+      backgroundColor: const Color(0xffD9D9D9),
       body: SizedBox(
         height: screenHeight,
         width: screenWidth,
@@ -120,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   children: [
                     screenState == 0 ? stateRegister() : stateOTP(),
-                    SizedBox(height: 50,),
+                    const SizedBox(height: 50,),
                     GestureDetector(
                       onTap: () {
                         if (screenState == 0) {
@@ -143,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Container(
                         height: 50,
                         width: screenWidth,
-                        margin: EdgeInsets.only(bottom: 10),
+                        margin: const EdgeInsets.only(bottom: 10),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.black87, width: 1),

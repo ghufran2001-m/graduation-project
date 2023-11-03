@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/mainscreens/account.dart';
 import 'package:graduation_project/mainscreens/community.dart';
 import 'package:graduation_project/mainscreens/contact.dart';
@@ -14,7 +15,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex =2;
+  int _selectedIndex = 2;
   static final List _widgetOptions = [
     const community_screen(),
     const tracker_screen(),
@@ -28,10 +29,32 @@ class _HomeState extends State<Home> {
       _selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffD9D9D9),
+      backgroundColor: const Color(0xffD9D9D9),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 85),
+          child: Text(
+            'SIWA',
+            style: GoogleFonts.montserrat(
+              color: Colors.black87,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 5,
+              fontSize: 20,
+            ),
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.notifications_rounded),
+          color: Colors.black87,
+        ),
+      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -50,7 +73,10 @@ class _HomeState extends State<Home> {
               label: 'Tracker',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.sos_rounded, size: 30,),
+              icon: Icon(
+                Icons.sos_rounded,
+                size: 30,
+              ),
               label: '',
             ),
             BottomNavigationBarItem(

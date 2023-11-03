@@ -1,4 +1,7 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
+
 class community_screen extends StatefulWidget {
   const community_screen({super.key});
 
@@ -9,6 +12,6 @@ class community_screen extends StatefulWidget {
 class _community_screenState extends State<community_screen> {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text('hi'),);
+    return const Text('community');
   }
 }
