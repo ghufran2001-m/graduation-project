@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/firebase_options.dart';
 import 'package:graduation_project/home.dart';
-import 'package:graduation_project/registeration/logIn_screen.dart';
 import 'package:graduation_project/registeration/registeration_screen.dart';
 
 void main() async {
@@ -26,12 +25,11 @@ class MyApp extends StatelessWidget {
       title: 'Graduation',
      initialRoute: _auth.currentUser !=null
      ? Home.screenRoute
-     : logInscreen.screenRoute,
+     : RegisterScreen.screenRoute,
       routes: {
         Home.screenRoute:(context) =>  const Home(),
         // ignore: equal_keys_in_map
         RegisterScreen.screenRoute:(context) =>  const RegisterScreen(),
-        logInscreen.screenRoute:(context) => const logInscreen(),
 
       },
     );

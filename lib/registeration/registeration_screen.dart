@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/home.dart';
-import 'package:graduation_project/registeration/logIn_screen.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -94,24 +93,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: screenHeight / 8, left: screenHeight / 25),
+                    top: screenHeight / 5, left: screenHeight / 50),
                 child: Column(
                   children: [
                     Text(
-                      "Sign UP",
+                      "Sign In",
                       style: GoogleFonts.montserrat(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
                         fontSize: screenWidth / 8,
                       ),
                     ),
-                    Text(
-                      "Create an account today!",
-                      style: GoogleFonts.montserrat(
-                        color: Colors.black87,
-                        fontSize: screenWidth / 30,
-                      ),
-                    ),
+                   
                   ],
                 ),
               ),
@@ -122,7 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 padding: EdgeInsets.only(
                   left: screenWidth / 12,
                   right: screenWidth / 12,
-                  top: screenHeight / 3,
+                  top: screenHeight / 2.5,
                 ),
                 child: Column(
                   children: [
@@ -167,38 +160,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ),
-                      ),
-                    ), //login sentance
-                    Container(
-                      padding: const EdgeInsets.only(bottom:40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Already have an account? ',
-                            style: GoogleFonts.montserrat(
-                              color: Colors.black87.withOpacity(0.5),
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1,
-                              fontSize: 12,
-                            ),
-                          ),
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const logInscreen()),
-                                    );
-                              },
-                              child: Text(
-                                'Log In here!',
-                                style: GoogleFonts.montserrat(
-                                  color:Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.5,
-                                  fontSize: 13,
-                                ),
-                              ))
-                        ],
                       ),
                     ),
                   ],

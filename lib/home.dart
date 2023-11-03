@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_project/mainscreen/account.dart';
-import 'package:graduation_project/mainscreen/community.dart';
-import 'package:graduation_project/mainscreen/contact.dart';
-import 'package:graduation_project/mainscreen/sos.dart';
-import 'package:graduation_project/mainscreen/tracker.dart';
-//import 'package:graduation_project/registeration_screen.dart';
+import 'package:graduation_project/mainscreens/account.dart';
+import 'package:graduation_project/mainscreens/community.dart';
+import 'package:graduation_project/mainscreens/contact.dart';
+import 'package:graduation_project/mainscreens/sos.dart';
+import 'package:graduation_project/mainscreens/tracker.dart';
 
 class Home extends StatefulWidget {
   static const String screenRoute = 'home_screen';
