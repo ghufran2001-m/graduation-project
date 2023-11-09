@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/firebase_options.dart';
 import 'package:graduation_project/home.dart';
 import 'package:graduation_project/registeration/registeration_screen.dart';
+import 'package:graduation_project/splashscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,10 +25,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Graduation',
      initialRoute: _auth.currentUser !=null
-     ? Home.screenRoute
+     ? splashscreen.screenRoute
      : RegisterScreen.screenRoute,
       routes: {
         Home.screenRoute:(context) =>  const Home(),
+        splashscreen.screenRoute: (context) =>  splashscreen(),
         // ignore: equal_keys_in_map
         RegisterScreen.screenRoute:(context) =>  const RegisterScreen(),
 
