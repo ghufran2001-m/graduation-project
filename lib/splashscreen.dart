@@ -5,12 +5,13 @@ import 'package:graduation_project/home.dart';
 class splashscreen extends StatefulWidget {
     static const String screenRoute = 'splash_screen';
 
+  const splashscreen({super.key});
+
   @override
   _splashscreenState createState() => _splashscreenState();
 }
 class _splashscreenState extends State<splashscreen>
     with SingleTickerProviderStateMixin {
-  @override
   void intState(){
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -25,7 +26,7 @@ class _splashscreenState extends State<splashscreen>
   Widget build(BuildContext context) {
     Timer(const Duration(milliseconds:1000),(){
       Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (BuildContext context) => Home()));
+          builder: (BuildContext context) => const Home()));
     });
     return Scaffold(
         body:    Container(

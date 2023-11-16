@@ -5,6 +5,7 @@ import 'package:graduation_project/mainscreens/community.dart';
 import 'package:graduation_project/mainscreens/contact.dart';
 import 'package:graduation_project/mainscreens/sos.dart';
 import 'package:graduation_project/mainscreens/tracker.dart';
+import 'package:graduation_project/notification.dart';
 
 class Home extends StatefulWidget {
   static const String screenRoute = 'home_screen';
@@ -50,7 +51,10 @@ class _HomeState extends State<Home> {
           ),
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+          builder: (BuildContext context) => const Notification_screen()));
+          },
           icon: const Icon(Icons.notifications_rounded),
           color: Colors.black87,
         ),

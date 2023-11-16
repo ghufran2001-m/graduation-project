@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
      : RegisterScreen.screenRoute,
       routes: {
         Home.screenRoute:(context) =>  const Home(),
-        splashscreen.screenRoute: (context) =>  splashscreen(),
+        splashscreen.screenRoute: (context) =>  const splashscreen(),
         // ignore: equal_keys_in_map
         RegisterScreen.screenRoute:(context) =>  const RegisterScreen(),
 
