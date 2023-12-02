@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 2;
   static final List _widgetOptions = [
     const community_screen(),
-    const tracker_screen(),
+    const googlemaps(),
     const SOS_screen(),
     const Contact_screen(),
     const Account_screen(),

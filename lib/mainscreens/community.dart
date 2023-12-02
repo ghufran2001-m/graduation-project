@@ -38,6 +38,7 @@ class _community_screenState extends State<community_screen> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Widget PostContainer() {
     return Container(
       height: MediaQuery.of(context).size.height / 3,
@@ -60,9 +61,9 @@ class _community_screenState extends State<community_screen> {
                       shape: BoxShape.circle   
                                ),
                   ),
-                  SizedBox(width: 10,),
+                  const SizedBox(width: 10,),
                   Text("Ghufran Mustafa", style: GoogleFonts.montserrat(fontSize: 15, fontWeight: FontWeight.bold,),),
-                  SizedBox(width: 130,),
+                  const SizedBox(width: 130,),
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.filter_list_sharp),
