@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +10,7 @@ class splashscreen extends StatefulWidget {
   const splashscreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _splashscreenState createState() => _splashscreenState();
 }
 class _splashscreenState extends State<splashscreen>

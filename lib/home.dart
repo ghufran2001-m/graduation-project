@@ -5,7 +5,7 @@ import 'package:graduation_project/mainscreens/community.dart';
 import 'package:graduation_project/mainscreens/contact.dart';
 import 'package:graduation_project/mainscreens/sos.dart';
 import 'package:graduation_project/mainscreens/tracker.dart';
-import 'package:graduation_project/notification.dart';
+import 'package:graduation_project/sidescreens/notification.dart';
 
 class Home extends StatefulWidget {
   static const String screenRoute = 'home_screen';
@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
         title: Padding(
           padding: const EdgeInsets.only(left: 85),
           child: Text(
-            'SIWA',
+            'SAWA',
             style: GoogleFonts.montserrat(
               color: Colors.black87,
               fontWeight: FontWeight.bold,

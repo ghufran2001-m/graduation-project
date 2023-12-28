@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/registeration/registeration_screen.dart';
+import 'package:graduation_project/mainscreens/registeration_screen.dart';
 
 // ignore: camel_case_types
 class Account_screen extends StatefulWidget {

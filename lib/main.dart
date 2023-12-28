@@ -3,8 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/firebase_options.dart';
 import 'package:graduation_project/home.dart';
-import 'package:graduation_project/registeration/registeration_screen.dart';
-import 'package:graduation_project/splashscreen.dart';
+import 'package:graduation_project/mainscreens/registeration_screen.dart';
+import 'package:graduation_project/sidescreens/splashscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

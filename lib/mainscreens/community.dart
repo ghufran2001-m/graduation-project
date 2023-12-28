@@ -1,7 +1,13 @@
 // ignore_for_file: camel_case_types
 
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/methods/text_field.dart';
+import 'package:graduation_project/methods/the_posts.dart';
+import 'package:image_picker/image_picker.dart';
 
 class community_screen extends StatefulWidget {
   const community_screen({super.key});
@@ -11,107 +17,138 @@ class community_screen extends StatefulWidget {
 }
 
 class _community_screenState extends State<community_screen> {
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          PostContainer(),
-          const SizedBox(
-            height: 10,
-          ),
-          PostContainer(),
-          const SizedBox(
-            height: 10,
-          ),
-          PostContainer(),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
-      ),
-    );
+  final currentUser = FirebaseAuth.instance.currentUser!;
+  final textController = TextEditingController();
+  File? _image;
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
   }
 
-  // ignore: non_constant_identifier_names
-  Widget PostContainer() {
-    return Container(
-      height: MediaQuery.of(context).size.height / 3,
-      width: MediaQuery.of(context).size.width - 15,
-      decoration:const BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.all(Radius.circular(15))),
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left:15, top:15),
-              child: Row(
-                children: [
-                  Container(
-                    height:40, width:40,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle   
-                               ),
-                  ),
-                  const SizedBox(width: 10,),
-                  Text("Ghufran Mustafa", style: GoogleFonts.montserrat(fontSize: 15, fontWeight: FontWeight.bold,),),
-                  const SizedBox(width: 130,),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.filter_list_sharp),
-                    color: Colors.black87,
-                  ),
-                ],
-                
-              ),
-            ),
+  void postMessage() async {
+    if (textController.text.isNotEmpty || _image != null) {
+      String? imageUrl = await uploadImage();
+      FirebaseFirestore.instance.collection("User Posts").add({
+        'UserNumber': currentUser.phoneNumber,
+        'Message': textController.text,
+        'ImageURL': imageUrl, // Use the resolved URL directly
+        'TimeStamp': Timestamp.now(),
+      });
+
+      setState(() {
+        textController.clear();
+        _image = null;
+      });
+    }
+  }
+
+  Future<String?> uploadImage() async {
+    if (_image == null) {
+      return null; // No image to upload
+    }
+
+    try {
+      // Generate a unique filename for the image
+      String filename =
+          DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
+
+      // Reference to the Firebase Storage bucket
+      firebase_storage.Reference reference = firebase_storage
+          .FirebaseStorage.instance
+          .ref()
+          .child('asset')
+          .child(filename);
+
+      // Upload the file to Firebase Storage
+      await reference.putFile(_image!);
+
+      // Get the download URL of the uploaded file
+      String downloadURL = await reference.getDownloadURL();
+
+      return downloadURL;
+    } catch (e) {
+      print('Error uploading image: $e');
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection("User Posts").orderBy("TimeStamp", descending: false).snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    final post = snapshot.data!.docs[index];
+                    return thePost(
+                      message: post['Message'],
+                      user: post['UserNumber'],
+                    );
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
           ),
-        
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  height: 150, width:200, color: Colors.white,
-                           
-                        ),
-              ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+        ),
+        // Post message input
+        Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.star),
-                    color: Colors.black87,
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.comment_rounded),
-                    color: Colors.black87,
-                  ),
-                  const SizedBox(
-                    width: 230,
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.system_update_tv_sharp),
-                    color: Colors.black87,
-                  ),
-                ],
+              Expanded(
+                child: MyTextField(
+                  controller: textController,
+                  hintText: "Share something with us",
+                  obscureText: false,
+                ),
+              ),
+              IconButton(
+                onPressed: _pickImage,
+                icon: const Icon(Icons.image),
+              ),
+              IconButton(
+                onPressed: postMessage,
+                icon: const Icon(Icons.send),
               ),
             ],
           ),
-        ],
-      ),
+        ),
+        // Display selected image
+        if (_image != null)
+          Image.file(
+            _image!,
+            height: 100,
+            width: 100,
+          ),
+        // Logged in as
+        Text(
+          "Logged in as: ${currentUser.phoneNumber!}",
+          style: const TextStyle(color: Colors.grey),
+        ),
+        const SizedBox(
+          height: 25,
+        ),
+      ],
     );
   }
 }
