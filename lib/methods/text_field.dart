@@ -7,7 +7,7 @@ class MyTextField extends StatelessWidget {
   const MyTextField({super.key,
   required this.controller,
   required this.hintText,
-  required this.obscureText,
+  required this.obscureText, required TextStyle style,
 
   });
 

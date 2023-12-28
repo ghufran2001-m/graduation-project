@@ -18,7 +18,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 2;
   static final List _widgetOptions = [
-    const community_screen(),
+    const community_screen(username: '',),
     const googlemaps(),
     const SOS_screen(),
     const Contact_screen(),

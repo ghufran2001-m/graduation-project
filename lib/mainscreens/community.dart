@@ -1,16 +1,16 @@
-// ignore_for_file: camel_case_types, avoid_print
-
+// ignore_for_file: avoid_print, camel_case_types
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/methods/text_field.dart';
 import 'package:graduation_project/methods/the_posts.dart';
 import 'package:image_picker/image_picker.dart';
 
 class community_screen extends StatefulWidget {
-  const community_screen({super.key});
+  const community_screen({super.key, required String username});
 
   @override
   State<community_screen> createState() => _community_screenState();
@@ -21,7 +21,34 @@ class _community_screenState extends State<community_screen> {
   final textController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? _image;
+  late String loggedInUsername = ''; // Initialize with an empty string
 
+  @override
+  void initState() {
+    super.initState();
+    // Fetch the logged-in username when the widget initializes
+    fetchLoggedInUsername();
+  }
+
+  // Function to fetch the logged-in username from Firestore
+  Future<void> fetchLoggedInUsername() async {
+    try {
+      // Fetch user data from Firestore
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(currentUser.phoneNumber)
+          .get();
+
+      // Get the username from the user data
+      setState(() {
+        loggedInUsername = userSnapshot['username'] ?? ''; // Use an empty string as a fallback
+      });
+    } catch (e) {
+      print('Error fetching logged-in user data: $e');
+    }
+  }
+
+  // Function to pick an image from the gallery
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -34,16 +61,16 @@ class _community_screenState extends State<community_screen> {
     }
   }
 
+  // Function to post a message
   void postMessage() async {
     if (textController.text.isNotEmpty || _image != null) {
       String? imageUrl = await uploadImage();
       FirebaseFirestore.instance.collection("User Posts").add({
         'UserNumber': currentUser.phoneNumber,
         'Message': textController.text,
-        'ImageURL': imageUrl, // Use the resolved URL directly
+        'ImageURL': imageUrl,
         'TimeStamp': Timestamp.now(),
-        'Likes' : [],
-
+        'Likes': [],
       });
 
       setState(() {
@@ -53,26 +80,23 @@ class _community_screenState extends State<community_screen> {
     }
   }
 
+  // Function to upload an image to Firebase Storage
   Future<String?> uploadImage() async {
     if (_image == null) {
-      return null; // No image to upload
+      return null;
     }
 
     try {
-      // Generate a unique filename for the image
       String filename = '${DateTime.now().millisecondsSinceEpoch}.jpg';
 
-      // Reference to the Firebase Storage bucket
       firebase_storage.Reference reference = firebase_storage
           .FirebaseStorage.instance
           .ref()
           .child('asset')
           .child(filename);
 
-      // Upload the file to Firebase Storage
       await reference.putFile(_image!);
 
-      // Get the download URL of the uploaded file
       String downloadURL = await reference.getDownloadURL();
 
       return downloadURL;
@@ -82,7 +106,7 @@ class _community_screenState extends State<community_screen> {
     }
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -99,16 +123,15 @@ class _community_screenState extends State<community_screen> {
                   itemBuilder: (context, index) {
                     final post = snapshot.data!.docs[index];
 
-                    // Check if the "ImageURL" field exists
                     String? imageUrl = post.data().containsKey('ImageURL')
                         ? post['ImageURL']
                         : null;
 
-                    return thePost(
+                    return ThePost(
                       message: post['Message'],
                       user: post['UserNumber'],
                       imageUrl: imageUrl,
-                      PostId: post.id,
+                      postId: post.id,
                       likes: List<String>.from(post['Likes'] ?? []),
                     );
                   },
@@ -124,9 +147,8 @@ class _community_screenState extends State<community_screen> {
             },
           ),
         ),
-        // Post message input
         Padding(
-          padding: const EdgeInsets.all(25.0),
+          padding: const EdgeInsets.only(left: 25,right: 25,top: 15,bottom: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -134,6 +156,7 @@ class _community_screenState extends State<community_screen> {
                 child: MyTextField(
                   controller: textController,
                   hintText: "Share something with us",
+                  style: TextStyle(color: Colors.grey[200]),
                   obscureText: false,
                 ),
               ),
@@ -148,20 +171,23 @@ class _community_screenState extends State<community_screen> {
             ],
           ),
         ),
-        // Display selected image
         if (_image != null)
           Image.file(
             _image!,
             height: 100,
             width: 100,
           ),
-        // Logged in as
         Text(
-          "Logged in as: ${currentUser.phoneNumber!}",
-          style: const TextStyle(color: Colors.grey),
+          "Logged in as: $loggedInUsername",
+          style: GoogleFonts.montserrat(
+            color: Colors.grey[700],
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.5,
+            fontSize: 13,
+          ),
         ),
         const SizedBox(
-          height: 15,
+          height:10,
         ),
       ],
     );

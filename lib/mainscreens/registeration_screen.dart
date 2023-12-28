@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,7 +53,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> verifyOTP() async {
-    await FirebaseAuth.instance.signInWithCredential(
+
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(
       PhoneAuthProvider.credential(
         verificationId: verID,
         smsCode: otpPin,
@@ -65,6 +67,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       );
     });
+    FirebaseFirestore.instance.collection("Users")
+      .doc(userCredential.user?.phoneNumber)
+      .set({
+        'username': phoneController.text,
+        'bio': 'Empty bio..'}
+
+      );
   }
   Future user() async{
     // ignore: await_only_futures

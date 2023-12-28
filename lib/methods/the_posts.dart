@@ -1,55 +1,70 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names
+// ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/methods/like_button.dart';
 
-class thePost extends StatefulWidget {
+class ThePost extends StatefulWidget {
   final String message;
   final String user;
   final String? imageUrl;
-  final String PostId;
+  final String postId;
   final List<String> likes;
-  const thePost({
+
+  const ThePost({
     Key? key,
     required this.message,
     required this.user,
     required this.imageUrl,
-    required this.PostId,
+    required this.postId,
     required this.likes,
   }) : super(key: key);
 
   @override
-  State<thePost> createState() => _thePostState();
+  State<ThePost> createState() => _ThePostState();
 }
 
-class _thePostState extends State<thePost> {
-  // user from firebase
-  final currentUser = FirebaseAuth.instance.currentUser!;
+class _ThePostState extends State<ThePost> {
   bool isLiked = false;
+  late String username ="";
 
   @override
   void initState() {
     super.initState();
     isLiked = widget.likes.contains(currentUser.phoneNumber);
+    fetchUsername();
   }
 
-  //toggle like
+  final currentUser = FirebaseAuth.instance.currentUser!;
+
+  Future<void> fetchUsername() async {
+    try {
+      DocumentSnapshot userSnapshot =
+          await FirebaseFirestore.instance.collection("Users").doc(widget.user).get();
+
+      setState(() {
+        username = userSnapshot["username"];
+      });
+    } catch (e) {
+      print("Error fetching username: $e");
+    }
+  }
+
   void toggleLike() {
     setState(() {
       isLiked = !isLiked;
     });
-    // Access the doc in firebase
+
     DocumentReference postRef =
-        FirebaseFirestore.instance.collection('User Posts').doc(widget.PostId);
+        FirebaseFirestore.instance.collection('User Posts').doc(widget.postId);
+
     if (isLiked) {
-      // if the post is now is liked, add the user's info to the 'likes' field
       postRef.update({
         'Likes': FieldValue.arrayUnion([currentUser.phoneNumber])
       });
     } else {
-      // if the post is nor unliked, remove the user's info from the 'likes' field
       postRef.update({
         'Likes': FieldValue.arrayRemove([currentUser.phoneNumber])
       });
@@ -67,14 +82,12 @@ class _thePostState extends State<thePost> {
       padding: const EdgeInsets.all(25),
       child: Column(
         children: [
-          // profile pic
-          // the post info
           Row(
             children: [
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.grey[400],
+                  color: Colors.grey[600],
                 ),
                 padding: const EdgeInsets.all(10),
                 child: const Icon(
@@ -88,19 +101,30 @@ class _thePostState extends State<thePost> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.user,
-                      style: TextStyle(color: Colors.grey[500]),
+                      username,
+                      style: GoogleFonts.montserrat(
+                        color: Colors.grey[800],
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5,
+                        fontSize: 13,
+                      ),
                     ),
                     const SizedBox(height: 10),
-                    Text(widget.message),
+                    Text(
+                      widget.message,
+                      style: GoogleFonts.montserrat(
+                        color: Colors.grey[900],
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                        fontSize: 13,
+                      ),
+                    ),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 5,
-          ),
+          const SizedBox(height: 5),
 
           if (widget.imageUrl != null)
             Image.network(
@@ -109,26 +133,24 @@ class _thePostState extends State<thePost> {
               width: 200,
             ),
 
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
 
-          //the like button and others
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Column(
                 children: [
-                  // like button
                   LikeButton(isLiked: isLiked, onTap: toggleLike),
-
-                  const SizedBox(
-                    height: 5,
-                  ),
-
-                  // like count
-                  Text(widget.likes.length.toString(),
-                  style:TextStyle(color: Colors.grey) ,)
+                  const SizedBox(height: 5),
+                  Text(
+                    widget.likes.length.toString(),
+                    style: GoogleFonts.montserrat(
+                      color: Colors.grey[800],
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                      fontSize: 13,
+                    ),
+                  )
                 ],
               ),
             ],
