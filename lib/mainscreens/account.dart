@@ -36,6 +36,8 @@ class _Account_screenState extends State<Account_screen> {
           ),
         ),
         content: TextField(
+          cursorColor: Colors.pink,
+          
           autofocus: true,
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -50,9 +52,24 @@ class _Account_screenState extends State<Account_screen> {
           // cancel button
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              "Cancel",
-              style: TextStyle(color: Colors.black),
+            child:  Container(
+              height: 40,width: 80,
+              decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.white,width:3)
+              ),
+              child: Center(
+                child:  Text(
+                  "cancel",
+                  style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5,
+                        fontSize: 14,
+                      ),
+                ),
+              ),
             ),
           ),
 
@@ -60,7 +77,7 @@ class _Account_screenState extends State<Account_screen> {
           TextButton(
             onPressed: () => Navigator.of(context).pop(newValue),
             child: Container(
-              height: 35,width: 75,
+              height: 40,width:80,
               decoration: BoxDecoration(
                 color: Colors.pink[200],
                 borderRadius: BorderRadius.circular(10),
