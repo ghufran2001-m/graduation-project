@@ -41,7 +41,8 @@ class _community_screenState extends State<community_screen> {
 
       // Get the username from the user data
       setState(() {
-        loggedInUsername = userSnapshot['username'] ?? ''; // Use an empty string as a fallback
+        loggedInUsername =
+            userSnapshot['username'] ?? ''; // Use an empty string as a fallback
       });
     } catch (e) {
       print('Error fetching logged-in user data: $e');
@@ -148,7 +149,8 @@ class _community_screenState extends State<community_screen> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 25,right: 25,top: 15,bottom: 15),
+          padding:
+              const EdgeInsets.only(left: 25, right: 25, top: 15, bottom: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -187,7 +189,7 @@ class _community_screenState extends State<community_screen> {
           ),
         ),
         const SizedBox(
-          height:10,
+          height: 10,
         ),
       ],
     );

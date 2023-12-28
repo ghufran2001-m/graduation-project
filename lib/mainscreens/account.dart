@@ -59,9 +59,24 @@ class _Account_screenState extends State<Account_screen> {
           // save button
           TextButton(
             onPressed: () => Navigator.of(context).pop(newValue),
-            child: const Text(
-              "Save",
-              style: TextStyle(color: Colors.pink),
+            child: Container(
+              height: 35,width: 75,
+              decoration: BoxDecoration(
+                color: Colors.pink[200],
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.white,width:3)
+              ),
+              child: Center(
+                child:  Text(
+                  "Save",
+                  style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5,
+                        fontSize: 14,
+                      ),
+                ),
+              ),
             ),
           )
         ],
