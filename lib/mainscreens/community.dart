@@ -19,16 +19,20 @@ class community_screen extends StatefulWidget {
 class _community_screenState extends State<community_screen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final textController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
   File? _image;
 
   Future<void> _pickImage() async {
     final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+        await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
       });
+    }
+    else {
+      print("No image selected");
     }
   }
 
