@@ -71,7 +71,7 @@ class _googlemapsState extends State<googlemaps> {
                     decoration: BoxDecoration(
                         color: Colors.pink[200],
                         border: Border.all(color: Colors.white, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                        borderRadius: const BorderRadius.all(Radius.circular(10))),
                     child: Center(
                         child: Text(
                       "track me",
@@ -83,7 +83,7 @@ class _googlemapsState extends State<googlemaps> {
                       ),
                     )),
                   ),
-                  SizedBox(height: 25,)
+                  const SizedBox(height: 25,)
                 ],
               ),
             ),

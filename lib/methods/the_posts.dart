@@ -1,13 +1,18 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 
 class thePost extends StatelessWidget {
   final String message;
   final String user;
+final String? imageUrl;
 
   const thePost({
     Key? key,
     required this.message,
     required this.user,
+     required this.imageUrl,
+
   }) : super(key: key);
 
   @override
@@ -48,7 +53,12 @@ class thePost extends StatelessWidget {
               ],
             ),
           ),
-        ],
+           if (imageUrl != null)
+              Image.network(
+                imageUrl!,
+                height: 100,
+                width: 100,
+      )],
       ),
     );
   }

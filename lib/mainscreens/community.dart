@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, avoid_print
 
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,15 +23,13 @@ class _community_screenState extends State<community_screen> {
   File? _image;
 
   Future<void> _pickImage() async {
-    final pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
       });
-    }
-    else {
+    } else {
       print("No image selected");
     }
   }
@@ -60,8 +58,7 @@ class _community_screenState extends State<community_screen> {
 
     try {
       // Generate a unique filename for the image
-      String filename =
-          DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
+      String filename = '${DateTime.now().millisecondsSinceEpoch}.jpg';
 
       // Reference to the Firebase Storage bucket
       firebase_storage.Reference reference = firebase_storage
@@ -83,22 +80,32 @@ class _community_screenState extends State<community_screen> {
     }
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
           child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection("User Posts").orderBy("TimeStamp", descending: false).snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection("User Posts")
+                .orderBy("TimeStamp", descending: false)
+                .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     final post = snapshot.data!.docs[index];
+
+                    // Check if the "ImageURL" field exists
+                    String? imageUrl = post.data()!.containsKey('ImageURL')
+                        ? post['ImageURL']
+                        : null;
+
                     return thePost(
                       message: post['Message'],
                       user: post['UserNumber'],
+                      imageUrl: imageUrl,
                     );
                   },
                 );
