@@ -98,7 +98,7 @@ class _community_screenState extends State<community_screen> {
                     final post = snapshot.data!.docs[index];
 
                     // Check if the "ImageURL" field exists
-                    String? imageUrl = post.data()!.containsKey('ImageURL')
+                    String? imageUrl = post.data().containsKey('ImageURL')
                         ? post['ImageURL']
                         : null;
 

@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 class thePost extends StatelessWidget {
   final String message;
   final String user;
-final String? imageUrl;
+  final String? imageUrl;
 
   const thePost({
     Key? key,
     required this.message,
     required this.user,
-     required this.imageUrl,
-
+    required this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -24,23 +23,25 @@ final String? imageUrl;
       ),
       margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
       padding: const EdgeInsets.all(25),
-      child: Row(
+      child: Column(
         children: [
           // profile pic
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey[400],
-            ),
-            padding: const EdgeInsets.all(10),
-            child: const Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(width: 20),
-          // message and user info
-          Expanded(
+         // the post info
+          Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey[400],
+                ),
+                padding: const EdgeInsets.all(10),
+                child: const Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+              ),
+             const SizedBox(width: 20),
+            Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -53,12 +54,16 @@ final String? imageUrl;
               ],
             ),
           ),
-           if (imageUrl != null)
-              Image.network(
-                imageUrl!,
-                height: 100,
-                width: 100,
-      )],
+            ],
+          ),
+          if (imageUrl != null)
+            Image.network(
+              imageUrl!,
+              height: 200,
+              width: 200,
+            )
+          //the like button and others
+        ],
       ),
     );
   }
