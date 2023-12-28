@@ -42,6 +42,8 @@ class _community_screenState extends State<community_screen> {
         'Message': textController.text,
         'ImageURL': imageUrl, // Use the resolved URL directly
         'TimeStamp': Timestamp.now(),
+        'Likes' : [],
+
       });
 
       setState(() {
@@ -106,6 +108,8 @@ class _community_screenState extends State<community_screen> {
                       message: post['Message'],
                       user: post['UserNumber'],
                       imageUrl: imageUrl,
+                      PostId: post.id,
+                      likes: List<String>.from(post['Likes'] ?? []),
                     );
                   },
                 );
@@ -157,7 +161,7 @@ class _community_screenState extends State<community_screen> {
           style: const TextStyle(color: Colors.grey),
         ),
         const SizedBox(
-          height: 25,
+          height: 15,
         ),
       ],
     );
