@@ -78,7 +78,6 @@ class _googlemapsState extends State<googlemaps> {
                       style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        letterSpacing:1.5,
                         fontSize: 13,
                       ),
                     )),

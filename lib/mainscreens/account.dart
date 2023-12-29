@@ -31,7 +31,6 @@ class _Account_screenState extends State<Account_screen> {
           style: GoogleFonts.montserrat(
             color: Colors.black,
             fontWeight: FontWeight.bold,
-            letterSpacing: 1.5,
             fontSize: 18,
           ),
         ),
@@ -65,7 +64,6 @@ class _Account_screenState extends State<Account_screen> {
                   style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
                         fontSize: 14,
                       ),
                 ),
@@ -89,7 +87,6 @@ class _Account_screenState extends State<Account_screen> {
                   style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
                         fontSize: 14,
                       ),
                 ),
@@ -143,7 +140,6 @@ class _Account_screenState extends State<Account_screen> {
                     style: GoogleFonts.montserrat(
                       color: Colors.grey[700],
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
                       fontSize: 13,
                     ),
                   ),
@@ -159,7 +155,6 @@ class _Account_screenState extends State<Account_screen> {
                       style: GoogleFonts.montserrat(
                         color: Colors.grey[700],
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
                         fontSize: 13,
                       ),
                     ),
@@ -182,24 +177,6 @@ class _Account_screenState extends State<Account_screen> {
                   const SizedBox(
                     height: 60,
                   ),
-
-                  // user posts
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25),
-                    child: Text(
-                      "My posts ",
-                      style: GoogleFonts.montserrat(
-                        color: Colors.grey[700],
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 60,
-                  ),
-
                   // sign out button
                   MaterialButton(
                     onPressed: () {
@@ -224,7 +201,6 @@ class _Account_screenState extends State<Account_screen> {
                           style: GoogleFonts.montserrat(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            letterSpacing: 1.5,
                             fontSize: 18,
                           ),
                         ),

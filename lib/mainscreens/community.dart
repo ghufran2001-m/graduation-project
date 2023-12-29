@@ -111,6 +111,18 @@ class _community_screenState extends State<community_screen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+         const SizedBox(
+          height: 15,
+        ),
+        Text(
+          "Logged in as: $loggedInUsername",
+          style: GoogleFonts.montserrat(
+            color: Colors.grey[700],
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+          ),
+        ),
+       
         Expanded(
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
@@ -179,18 +191,7 @@ class _community_screenState extends State<community_screen> {
             height: 100,
             width: 100,
           ),
-        Text(
-          "Logged in as: $loggedInUsername",
-          style: GoogleFonts.montserrat(
-            color: Colors.grey[700],
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.5,
-            fontSize: 13,
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
+        
       ],
     );
   }

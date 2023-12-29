@@ -28,7 +28,7 @@ class ThePost extends StatefulWidget {
 
 class _ThePostState extends State<ThePost> {
   bool isLiked = false;
-  late String username ="";
+  late String username = "";
 
   @override
   void initState() {
@@ -41,8 +41,10 @@ class _ThePostState extends State<ThePost> {
 
   Future<void> fetchUsername() async {
     try {
-      DocumentSnapshot userSnapshot =
-          await FirebaseFirestore.instance.collection("Users").doc(widget.user).get();
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(widget.user)
+          .get();
 
       setState(() {
         username = userSnapshot["username"];
@@ -105,7 +107,6 @@ class _ThePostState extends State<ThePost> {
                       style: GoogleFonts.montserrat(
                         color: Colors.grey[800],
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
                         fontSize: 13,
                       ),
                     ),
@@ -115,7 +116,6 @@ class _ThePostState extends State<ThePost> {
                       style: GoogleFonts.montserrat(
                         color: Colors.grey[900],
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
                         fontSize: 13,
                       ),
                     ),
@@ -125,16 +125,16 @@ class _ThePostState extends State<ThePost> {
             ],
           ),
           const SizedBox(height: 5),
-
           if (widget.imageUrl != null)
-            Image.network(
-              widget.imageUrl!,
-              height: 200,
-              width: 200,
+            Padding(
+              padding: const EdgeInsets.only(left:20, top:10),
+              child: Image.network(
+                widget.imageUrl!,
+                height: 200,
+                width: 200,
+              ),
             ),
-
           const SizedBox(height: 10),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -147,7 +147,6 @@ class _ThePostState extends State<ThePost> {
                     style: GoogleFonts.montserrat(
                       color: Colors.grey[800],
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
                       fontSize: 13,
                     ),
                   )

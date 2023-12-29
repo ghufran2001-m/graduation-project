@@ -39,13 +39,12 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Padding(
-          padding: const EdgeInsets.only(left: 85),
+          padding: const EdgeInsets.only(left: 100),
           child: Text(
             'SAWA',
             style: GoogleFonts.montserrat(
               color: Colors.black87,
               fontWeight: FontWeight.bold,
-              letterSpacing: 5,
               fontSize: 20,
             ),
           ),
