@@ -10,7 +10,6 @@ class Contact {
 
   Contact(this.id, this.name, this.number);
 
-  // Convert Contact object to a map for Firebase Firestore
   Map<String, dynamic> toMap() {
     return {'name': name, 'number': number};
   }
@@ -67,9 +66,10 @@ class _ContactPageState extends State<ContactPage> {
           Text(
             "Emergency Contacts",
             style: TextStyle(
-                color: Colors.grey[800],
-                fontWeight: FontWeight.bold,
-                fontSize: 20),
+              color: Colors.grey[800],
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -102,27 +102,11 @@ class _ContactPageState extends State<ContactPage> {
             child: ListView.builder(
               itemCount: filteredContacts.length,
               itemBuilder: (context, index) {
-                return Dismissible(
-                  key: Key(filteredContacts[index].id),
-                  background: Container(
-                    color: Colors.red,
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onDismissed: (direction) {
-                    _deleteContact(filteredContacts[index].id);
-                  },
-                  direction: DismissDirection.endToStart,
-                  child: ListTile(
-                    title: Text(filteredContacts[index].name),
-                    subtitle: Text(filteredContacts[index].number),
-                    onTap: () {
-                      sendSOS(context, filteredContacts[index]);
-                    },
-                  ),
+                return Column(
+                  children: [
+                    if (index > 0) const SizedBox(height: 10),
+                    buildContactTile(filteredContacts[index]),
+                  ],
                 );
               },
             ),
@@ -139,7 +123,6 @@ class _ContactPageState extends State<ContactPage> {
           );
 
           if (newContact != null) {
-            // Save the new contact to Firebase Firestore
             await contactCollection.add(newContact.toMap());
             _loadContacts();
           }
@@ -153,15 +136,129 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
+  Widget buildContactTile(Contact contact) {
+    return Container(
+      color: Colors.white70,
+      padding: const EdgeInsets.all(8),
+      child: ListTile(
+        title: Text(
+          'Contact: ${contact.name}',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        subtitle: Text(contact.number),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon:  Icon(Icons.edit, color: Colors.grey[900]),
+              onPressed: () {
+                _editContact(contact);
+              },
+            ),
+            IconButton(
+              icon:  Icon(Icons.delete, color: Colors.pink[900]),
+              onPressed: () {
+                _deleteContact(contact.id);
+              },
+            ),
+          ],
+        ),
+        onTap: () {
+          sendSOS(context, contact);
+        },
+      ),
+    );
+  }
+
+  void _editContact(Contact contact) async {
+    final editedContact = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditContactPage(contact: contact),
+      ),
+    );
+
+    if (editedContact != null) {
+      await contactCollection.doc(contact.id).update(editedContact.toMap());
+      _loadContacts();
+    }
+  }
+
   void sendSOS(BuildContext context, Contact contact) {
     print('Sending SOS to ${contact.name} (${contact.number})');
-    // Implement the SOS functionality using the selected contact
-    // You can use the contact information to send the SOS message
+  }
+}
+
+class EditContactPage extends StatefulWidget {
+  final Contact contact;
+
+  const EditContactPage({Key? key, required this.contact}) : super(key: key);
+
+  @override
+  _EditContactPageState createState() => _EditContactPageState();
+}
+
+class _EditContactPageState extends State<EditContactPage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = widget.contact.name;
+    numberController.text = widget.contact.number;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xffD9D9D9),
+      appBar: AppBar(
+        title: const Text('Edit Contact'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(labelText: 'Contact Name'),
+            ),
+            const SizedBox(height: 16.0),
+            TextField(
+              controller: numberController,
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(labelText: 'Contact Number'),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(
+                  context,
+                  Contact(widget.contact.id, nameController.text, numberController.text),
+                );
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.pink[200]),
+              child: const Text(
+                "Save Changes",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
 class AddContactPage extends StatefulWidget {
-  const AddContactPage({super.key});
+  const AddContactPage({Key? key}) : super(key: key);
 
   @override
   _AddContactPageState createState() => _AddContactPageState();
@@ -195,21 +292,19 @@ class _AddContactPageState extends State<AddContactPage> {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () async {
-                // Create a new contact and send it back to the previous page
+              onPressed: () {
                 Navigator.pop(
                   context,
                   Contact('', nameController.text, numberController.text),
                 );
               },
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Colors.pink[200]),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.pink[200]),
               child: const Text(
                 "Save Contact",
                 style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    ),
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

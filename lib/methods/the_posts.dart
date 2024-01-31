@@ -29,11 +29,13 @@ class ThePost extends StatefulWidget {
 class _ThePostState extends State<ThePost> {
   bool isLiked = false;
   late String username = "";
+  late bool isCurrentUserPost;
 
   @override
   void initState() {
     super.initState();
     isLiked = widget.likes.contains(currentUser.phoneNumber);
+    isCurrentUserPost = currentUser.phoneNumber == widget.user;
     fetchUsername();
   }
 
@@ -71,6 +73,13 @@ class _ThePostState extends State<ThePost> {
         'Likes': FieldValue.arrayRemove([currentUser.phoneNumber])
       });
     }
+  }
+
+  void deletePost() async {
+    await FirebaseFirestore.instance
+        .collection('User Posts')
+        .doc(widget.postId)
+        .delete();
   }
 
   @override
@@ -136,7 +145,7 @@ class _ThePostState extends State<ThePost> {
             ),
           const SizedBox(height: 10),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: [
@@ -149,9 +158,14 @@ class _ThePostState extends State<ThePost> {
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
                     ),
-                  )
+                  ),
                 ],
               ),
+              if (isCurrentUserPost)
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: deletePost,
+                ),
             ],
           )
         ],

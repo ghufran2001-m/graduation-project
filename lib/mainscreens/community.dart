@@ -1,27 +1,36 @@
-// ignore_for_file: avoid_print, camel_case_types
+// ignore_for_file: avoid_print, camel_case_types, unused_field, avoid_function_literals_in_foreach_calls
+
+// community.dart
+
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/methods/text_field.dart';
 import 'package:graduation_project/methods/the_posts.dart';
 import 'package:image_picker/image_picker.dart';
 
-class community_screen extends StatefulWidget {
-  const community_screen({super.key, required String username});
+class CommunityScreen extends StatefulWidget {
+  final String username;
+  final Function(int) notificationCallback;
+
+  const CommunityScreen({Key? key, required this.username, required this.notificationCallback}) : super(key: key);
 
   @override
-  State<community_screen> createState() => _community_screenState();
+  State<CommunityScreen> createState() => _CommunityScreenState();
 }
 
-class _community_screenState extends State<community_screen> {
+class _CommunityScreenState extends State<CommunityScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final textController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? _image;
   late String loggedInUsername = ''; // Initialize with an empty string
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance; // Create an instance of FirebaseMessaging
+  int notificationCount = 0; // Initialize notification count
 
   @override
   void initState() {
@@ -62,11 +71,13 @@ class _community_screenState extends State<community_screen> {
     }
   }
 
-  // Function to post a message
+  // Function to post a message and send a notification
   void postMessage() async {
     if (textController.text.isNotEmpty || _image != null) {
       String? imageUrl = await uploadImage();
-      FirebaseFirestore.instance.collection("User Posts").add({
+      DocumentReference postRef = FirebaseFirestore.instance.collection("User Posts").doc();
+
+      await postRef.set({
         'UserNumber': currentUser.phoneNumber,
         'Message': textController.text,
         'ImageURL': imageUrl,
@@ -78,7 +89,36 @@ class _community_screenState extends State<community_screen> {
         textController.clear();
         _image = null;
       });
+
+      // Send a notification to subscribed users
+      sendPostNotification(postRef.id);
     }
+  }
+
+  // Function to send a post notification to subscribed users
+  Future<void> sendPostNotification(String postId) async {
+    // Fetch all users
+    QuerySnapshot usersSnapshot =
+        await FirebaseFirestore.instance.collection("Users").get();
+
+    // Send a notification to each user
+    usersSnapshot.docs.forEach((userDoc) {
+      String otherUserNumber = userDoc.id;
+
+      // Skip sending notification to the user who posted
+      if (otherUserNumber != currentUser.phoneNumber) {
+        // Subscribe other users to the post topic
+        _firebaseMessaging.subscribeToTopic(postId);
+
+        // Increment the notification count
+        setState(() {
+          notificationCount++;
+        });
+      }
+    });
+
+    // Notify the callback in the Home screen with the updated count
+    widget.notificationCallback(notificationCount);
   }
 
   // Function to upload an image to Firebase Storage
@@ -111,18 +151,9 @@ class _community_screenState extends State<community_screen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-         const SizedBox(
+        const SizedBox(
           height: 15,
         ),
-        Text(
-          "Logged in as: $loggedInUsername",
-          style: GoogleFonts.montserrat(
-            color: Colors.grey[700],
-            fontWeight: FontWeight.bold,
-            fontSize: 13,
-          ),
-        ),
-       
         Expanded(
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
@@ -161,8 +192,7 @@ class _community_screenState extends State<community_screen> {
           ),
         ),
         Padding(
-          padding:
-              const EdgeInsets.only(left: 25, right: 25, top: 15, bottom: 15),
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 15, bottom: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -191,7 +221,6 @@ class _community_screenState extends State<community_screen> {
             height: 100,
             width: 100,
           ),
-        
       ],
     );
   }
