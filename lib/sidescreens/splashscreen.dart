@@ -27,7 +27,7 @@ class _splashscreenState extends State<splashscreen>
   }
   @override
   Widget build(BuildContext context) {
-    Timer(const Duration(milliseconds:1000),(){
+    Timer(const Duration(milliseconds:2000),(){
       Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (BuildContext context) => const Home()));
     });
