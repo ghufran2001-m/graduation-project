@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
     const community_screen(username: '',),
     const googlemaps(),
     const SOS_screen(),
-    const Contact_screen(),
+    const ContactPage(),
     const Account_screen(),
   ];
 //METHOD TO SET STATE
