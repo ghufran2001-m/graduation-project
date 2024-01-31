@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
           });
         },
       ),
-      const googlemaps(),
+      const GoogleMapsPage(),
       const SOS_screen(),
       const ContactPage(),
       const Account_screen(),

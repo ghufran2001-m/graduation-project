@@ -61,7 +61,7 @@ class _ContactPageState extends State<ContactPage> {
       body: Column(
         children: [
           const SizedBox(
-            height: 10,
+            height: 25,
           ),
           Text(
             "Emergency Contacts",
@@ -72,7 +72,7 @@ class _ContactPageState extends State<ContactPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20),
             child: TextField(
               controller: searchController,
               onChanged: (value) {
@@ -137,37 +137,43 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   Widget buildContactTile(Contact contact) {
-    return Container(
-      color: Colors.white70,
-      padding: const EdgeInsets.all(8),
-      child: ListTile(
-        title: Text(
-          'Contact: ${contact.name}',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(left: 10,right: 10),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+                color: Colors.white70,
+        ),
+        padding: const EdgeInsets.all(10),
+        child: ListTile(
+          title: Text(
+            'Contact: ${contact.name}',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          subtitle: Text(contact.number),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon:  Icon(Icons.edit, color: Colors.grey[900]),
+                onPressed: () {
+                  _editContact(contact);
+                },
+              ),
+              IconButton(
+                icon:  Icon(Icons.delete, color: Colors.pink[900]),
+                onPressed: () {
+                  _deleteContact(contact.id);
+                },
+              ),
+            ],
+          ),
+          onTap: () {
+            sendSOS(context, contact);
+          },
         ),
-        subtitle: Text(contact.number),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon:  Icon(Icons.edit, color: Colors.grey[900]),
-              onPressed: () {
-                _editContact(contact);
-              },
-            ),
-            IconButton(
-              icon:  Icon(Icons.delete, color: Colors.pink[900]),
-              onPressed: () {
-                _deleteContact(contact.id);
-              },
-            ),
-          ],
-        ),
-        onTap: () {
-          sendSOS(context, contact);
-        },
       ),
     );
   }

@@ -13,21 +13,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
   List<NotificationModel> notifications = fetchNotifications();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffD9D9D9),
-      appBar: AppBar(
-        title: const Text('Notifications'),
-      ),
-      body: ListView.builder(
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          return buildNotificationTile(notifications[index], index);
-        },
-      ),
-    );
-  }
-
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: const Color(0xffD9D9D9),
+    appBar: AppBar(
+      title: const Text('Notifications'),
+    ),
+    body: ListView.builder(
+      itemCount: notifications.length,
+      itemBuilder: (context, index) {
+        return Column(
+          children: [ const SizedBox(height: 10), // Add space between notifications
+            buildNotificationTile(notifications[index], index),
+          ],
+        );
+      },
+    ),
+  );
+}
   Widget buildNotificationTile(NotificationModel notification, int index) {
     Widget notificationIcon;
     Color tileColor;
@@ -63,17 +66,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
           notifications.removeAt(index);
         });
       },
-      child: Container(
-        color: tileColor,
-        padding: const EdgeInsets.all(8.0),
-        child: ListTile(
-          title: Text(
-            notificationText,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 5,right: 5),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          color: tileColor,
           ),
-          leading: notificationIcon,
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            title: Text(
+              notificationText,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            leading: notificationIcon,
+          ),
         ),
       ),
     );

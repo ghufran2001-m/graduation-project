@@ -17,17 +17,26 @@ class _SOS_screenState extends State<SOS_screen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(
+          height: 10,
+        ),
         // The SOS text explanation
-        Container(
-          color: Colors.white30,
-          padding:
-              const EdgeInsets.only(left: 30, top: 20, bottom: 30, right: 15),
-          child: Text(
-            "If you are feeling unsafe or in danger please press the button and an alert message will be sent to your contact.",
-            style: TextStyle(
-              color: Colors.grey[800],
-              fontWeight: FontWeight.bold,
-              fontSize: 15,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+                        color: Colors.white54,
+
+            ),
+            padding:
+                const EdgeInsets.only(left: 30, top: 20, bottom: 30, right: 15),
+            child: Text(
+              "If you are feeling unsafe or in danger please press the button and an alert message will be sent to your contact.",
+              style: TextStyle(
+                color: Colors.grey[900],
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
             ),
           ),
         ),
@@ -47,9 +56,18 @@ class _SOS_screenState extends State<SOS_screen> {
                 height: 200,
                 width: 200,
                 decoration: BoxDecoration(
-                    color: Colors.pink[300],
-                    border: Border.all(color: Colors.white, width: 3),
-                    shape: BoxShape.circle),
+                  color: Colors.pink[300],
+                  border: Border.all(color: Colors.white70, width: 3),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2), // Shadow color
+                      spreadRadius: 5, // How much the shadow should spread
+                      blurRadius: 7, // How blurry the shadow should be
+                      offset: const Offset(0, 3), // Offset of the shadow
+                    ),
+                  ],
+                ),
                 child: const Center(
                   child: Text(
                     "SOS",
@@ -68,16 +86,22 @@ class _SOS_screenState extends State<SOS_screen> {
           height: 25,
         ),
         // The "I'm Safe" text explanation
-        Container(
-          color: Colors.white30,
-          padding:
-              const EdgeInsets.only(left: 30, top: 20, bottom: 30, right: 15),
-          child: Text(
-            "If everything is okay press the (I'm safe) button so your contact will know.",
-            style: TextStyle(
-              color: Colors.grey[800],
-              fontWeight: FontWeight.bold,
-              fontSize: 15,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+                          color: Colors.white54,
+          
+              ),
+            padding:
+                const EdgeInsets.only(left: 30, top: 20, bottom: 30, right: 15),
+            child: Text(
+              "If everything is okay press the (I'm safe) button so your contact will know.",
+              style: TextStyle(
+                color: Colors.grey[900],
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
             ),
           ),
         ),
@@ -94,9 +118,18 @@ class _SOS_screenState extends State<SOS_screen> {
             height: 100,
             width: 100,
             decoration: BoxDecoration(
-                color: Colors.green[300],
-                border: Border.all(color: Colors.white, width: 3),
-                shape: BoxShape.circle),
+                  color: Colors.green[300],
+                  border: Border.all(color: Colors.white70, width: 3),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2), // Shadow color
+                      spreadRadius: 5, // How much the shadow should spread
+                      blurRadius: 7, // How blurry the shadow should be
+                      offset: const Offset(0, 3), // Offset of the shadow
+                    ),
+                  ],
+                ),
             child: const Center(
               child: Text(
                 "I'm Safe",
