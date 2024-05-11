@@ -148,7 +148,7 @@ class _SOS_screenState extends State<SOS_screen> {
 
   void sendSOS() async {
     try {
-      // Get the current user's ID (assuming you're using Firebase Authentication)
+      // Get the current user's ID 
       String userId = FirebaseAuth.instance.currentUser!.uid;
 
       // Get the user's current location
@@ -179,7 +179,7 @@ class _SOS_screenState extends State<SOS_screen> {
 
   void sendImSafe() async {
     try {
-      // Get the current user's ID (assuming you're using Firebase Authentication)
+      // Get the current user's ID 
       String userId = FirebaseAuth.instance.currentUser!.uid;
 
       // Prepare the "I'm Safe" message
